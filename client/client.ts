@@ -1,5 +1,4 @@
 import { notify, inputDialog, registerContext, showContext, triggerServerCallback } from '@overextended/ox_lib/client'
-import { register } from 'module'
 const playerName: string = GetPlayerName(PlayerPedId())
 const helpDialog: any = {
   1: { label: 'Type', description: 'Select Report Type for your report', type: 'select', options: ['Report a Player', 'General Assistance'], required: true },
