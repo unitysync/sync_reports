@@ -8,7 +8,9 @@
     "types": ["@citizenfx/client", "@types/node"],
     "lib": ["es2021"],
     "moduleResolution": "bundler",
+    "skipLibCheck": true
+
   },
   "include": ["./**/*"],
-  "exclude": ["**/node_modules", "**/__tests__/*"]
+  "exclude": ["../node_modules/**", "**/__tests__/*"]
 }
