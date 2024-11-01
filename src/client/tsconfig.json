@@ -1,0 +1,12 @@
+{
+  "extends": "../common/tsconfig.json",
+  "compilerOptions": {
+    "types": [
+      "@citizenfx/client",
+      "@nativewrappers/fivem"
+    ]
+  },
+  "include": [
+    "./"
+  ]
+}
