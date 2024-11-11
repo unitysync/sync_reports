@@ -50,8 +50,9 @@ jobs:
 
       - name: Bundle files
         run: |
-          mkdir -p ./temp/sync_reports
-          cp ./{dist/server.js,dist/client.js,README.md,LICENSE,fxmanifest.lua} ./temp/sync_reports
+          mkdir -p ./temp/sync_reports/dist
+          cp ./{dist/client.js,dist/server.js} ./temp/sync_reports/dist
+          cp ./{README.md,LICENSE,fxmanifest.lua, sql/install.sql} ./temp/sync_reports
           cd ./temp && zip -r ../sync_reports.zip ./sync_reports
 
       - name: Create Release
