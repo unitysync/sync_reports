@@ -3,7 +3,10 @@
     "types": [
       "@types/node",
       "@citizenfx/server"
-    ]
+    ],
+    "lib": ["ES2022"],
+    "moduleResolution": "bundler",
+    "module": "es2022"
   },
   "include": [
     "./"
