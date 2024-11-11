@@ -43,9 +43,13 @@ onNet('sync_reports:addReport', async (report: string, target?: number) => {
   }
 });
 
-addCommand('reports', async (source, args, raw) => {
-  emitNet('sync_reports:openMenu', source);
-}, {
-  help: 'View active reports',
-  restricted: true,
-})
+addCommand(
+  'reports',
+  async (source, args, raw) => {
+    emitNet('sync_reports:openMenu', source);
+  },
+  {
+    help: 'View active reports',
+    restricted: true,
+  }
+);

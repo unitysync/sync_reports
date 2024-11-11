@@ -30,15 +30,10 @@ createBuilder(
     },
   ],
   async (outfiles) => {
-    const files = await getFiles('dist/web', 'static', 'locales');
     await createFxmanifest({
       client_scripts: [outfiles.client],
       server_scripts: [outfiles.server],
-      // files: ['lib/init.lua', 'lib/client/**.lua', ...files],
       dependencies: ['/server:7290', '/onesync'],
-      // metadata: {
-      //   ui_page: 'dist/web/index.html',
-      // },
     });
   }
 );
