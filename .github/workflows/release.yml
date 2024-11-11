@@ -20,45 +20,39 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.repository.default_branch }}
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4.0.0
-        with:
-          version: 9
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
-      - name: Get variables
-        id: get_vars
-        run: |
-          echo '::set-output name=SHORT_SHA::$(git rev-parse --short HEAD)'
-          echo '::set-output name=DATE::$(date +'%D')'
-
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: 'pnpm'
-          cache-dependency-path: 'pnpm-lock.yaml'
-
-      - name: Install dependencies
-        run: pnpm i --frozen-lockfile
+      - name: Bump manifest version
+        run: node .github/actions/bump-manifest.js
+        env:
+          TGT_RELEASE_VERSION: ${{ github.ref_name }}
 
       - name: Run build
         run: pnpm build
+        working-directory: web
+        env:
+          CI: false
 
-      - name: Bump package version
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          pnpm version ${{ github.ref_name }} --git-tag-version false
+      - name: Push manifest change
+        uses: EndBug/add-and-commit@v8
+        with:
+          add: fxmanifest.lua
+          push: true
+          author_name: Manifest Bumper
+          author_email: 41898282+github-actions[bot]@users.noreply.github.com
+          message: 'chore: bump manifest version to ${{ github.ref_name }}'
 
-      - name: Update repository
-        run: |
-          git add .
-          git commit -am '${{ github.ref_name }}'
-          git push
+      - name: Update tag ref
+        uses: EndBug/latest-tag@latest
+        with:
+          ref: ${{ github.ref_name }}
 
       - name: Bundle files
         run: |
-          zip -r ${{ github.event.repository.name }}.zip . -x "./.*" "./node_modules/*" "./scripts/*" "./src/*" "./web/*" "./tsconfig.json" "./pnpm-lock.yaml" "./package.json" "./eslint.config.js"
+          mkdir -p ./temp/sync_reports
+          cp ./{dist/server.js,dist/client.js,README.md,LICENSE,fxmanifest.lua} ./temp/sync_reports
+          cd ./temp && zip -r ../sync_reports.zip ./sync_reports
 
       - name: Create Release
         uses: 'marvinpinto/action-automatic-releases@v1.2.1'
@@ -67,7 +61,7 @@ jobs:
           repo_token: '${{ secrets.GITHUB_TOKEN }}'
           title: '${{ env.RELEASE_VERSION }}'
           prerelease: false
-          files: ${{ github.event.repository.name }}.zip
+          files: sync_armory.zip
 
         env:
           CI: false
