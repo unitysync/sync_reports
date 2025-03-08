@@ -1,8 +1,6 @@
-import { Vector3 } from '@nativewrappers/fivem';
-import { cache, inputDialog, registerContext, showContext, triggerServerCallback } from '@overextended/ox_lib/client';
+import { inputDialog, registerContext, showContext, triggerServerCallback } from '@overextended/ox_lib/client';
 
 interface ReportData {
-  targetCoords: Vector3;
   reportId: number;
   player: number;
   target: number;
@@ -20,18 +18,10 @@ interface ContextOption {
 }
 
 const reportOptions = (data: ReportData) => {
-  const tPos: Vector3 = data.targetCoords;
   registerContext({
     id: `sync_reports:options_${data.reportId}`,
     title: `Report: ${data.reportId}`,
     options: [
-      {
-        title: 'Go To Player',
-        icon: 'user',
-        onSelect: () => {
-          SetEntityCoords(cache.ped, tPos.x, tPos.y, tPos.z, false, false, false, false);
-        },
-      },
       {
         title: 'Resolve Report',
         icon: 'check',
