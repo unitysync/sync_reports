@@ -51,23 +51,24 @@ const reportOptions = (data: ReportData) => {
 const fetchActive = async () => {
   const activeOptions: ContextOption[] = [];
   const response: ReportData[] = await triggerServerCallback('sync_reports:fetchActive', 0) as ReportData[];
-  if (!response) {
+  if (response.length === 0) {
     activeOptions.push({
       title: 'No Active Reports',
       description: 'Any active reports have been actioned or resolved. Keep doing a good job.',
       icon: 'hammer',
       disabled: true,
     });
-  }
-  response.map((report: ReportData) => {
-    activeOptions.push({
-      title: `[${report.reportId}] ${report.playerName}`,
-      description: `${report.report}`,
-      icon: 'hammer',
-      onSelect: reportOptions,
-      args: report,
+  } else {
+    response.map((report: ReportData) => {
+      activeOptions.push({
+        title: `[${report.reportId}] ${report.playerName}`,
+        description: `${report.report}`,
+        icon: 'hammer',
+        onSelect: reportOptions,
+        args: report,
+      });
     });
-  });
+  }
 
   registerContext({
     id: 'sync_reports:active',
@@ -81,22 +82,22 @@ const fetchActive = async () => {
 const fetchHistory = async () => {
   const historyOptions: ContextOption[] = [];
   const response: ReportData[] = await triggerServerCallback('sync_reports:fetchHistory', 0) as ReportData[];
-  if (!response) {
+  if (response.length === 0) {
     historyOptions.push({
       title: 'No Past Reports To Display',
       icon: 'clock-rotate-left',
       disabled: true,
     });
-    return;
+  } else {
+    response.map((report: ReportData) => {
+      historyOptions.push({
+        title: `[${report.reportId}] ${report.playerName}`,
+        description: `${report.report}`,
+        icon: 'hammer',
+        disabled: true,
+      });
+    })
   }
-  response.map((report: ReportData) => {
-    historyOptions.push({
-      title: `[${report.reportId}] ${report.playerName}`,
-      description: `${report.report}`,
-      icon: 'hammer',
-      disabled: true,
-    });
-  })
   registerContext({
     id: 'sync_reports:history',
     title: 'Report History',
