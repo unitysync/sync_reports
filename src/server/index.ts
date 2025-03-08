@@ -1,6 +1,8 @@
 import { onClientCallback, addCommand } from '@overextended/ox_lib/server';
 import { oxmysql as MySQL } from '@overextended/oxmysql';
 
+const playerCooldowns: boolean[] = []
+
 const isAdmin = (src: number | string): boolean => {
   return IsPlayerAceAllowed(src.toString(), 'command.reports');
 };
@@ -25,12 +27,28 @@ onNet('sync_reports:resolveReport', async (reportId: number) => {
 onNet('sync_reports:addReport', async (report: string, target?: number) => {
   if (!report) return;
   if (!target) target = source;
+  if (playerCooldowns[source]) {
+    emitNet('ox_lib:notify', source, {
+      title: 'Error',
+      description: 'You must wait before submitting another report.',
+      icon: 'shield-halved',
+    });
+    return;
+  }
+  
+  playerCooldowns[source] = true;
+
   await MySQL.insert('INSERT INTO reports (target, playerName, player, report, active) VALUES (?, ?, ?, ?, 1)', [
     target,
     GetPlayerName(source.toString()),
     source,
     report,
   ]);
+
+  setTimeout(() => {
+    playerCooldowns[source] = null;
+  }, GetConvarInt('reports:cooldown', 30000));
+
   const players = getPlayers().filter((p) => isAdmin(p));
   for (const player of players) {
     if (isAdmin(player)) {
@@ -43,13 +61,9 @@ onNet('sync_reports:addReport', async (report: string, target?: number) => {
   }
 });
 
-addCommand(
-  'reports',
-  async (source, args, raw) => {
-    emitNet('sync_reports:openMenu', source);
-  },
-  {
-    help: 'View active reports',
-    restricted: true,
-  }
-);
+addCommand('reports', async (source) => {
+  emitNet('sync_reports:openMenu', source);
+}, {
+  help: 'View active reports',
+  restricted: true,
+});
