@@ -62,15 +62,14 @@ const fetchActive = async () => {
   const activeOptions: ContextOption[] = [];
   const response: ReportData[] = await triggerServerCallback('sync_reports:fetchActive', 0) as ReportData[];
   if (!response) {
-    activeOptions[1] = {
+    activeOptions.push({
       title: 'No Active Reports',
       description: 'Any active reports have been actioned or resolved. Keep doing a good job.',
       icon: 'hammer',
       disabled: true,
-    };
-    return;
+    });
   }
-  for (const report of response) {
+  response.map((report: ReportData) => {
     activeOptions.push({
       title: `[${report.reportId}] ${report.playerName}`,
       description: `${report.report}`,
@@ -78,42 +77,43 @@ const fetchActive = async () => {
       onSelect: reportOptions,
       args: report,
     });
-    registerContext({
-      id: 'sync_reports:active',
-      title: 'Active Reports',
-      menu: 'sync_reports:main',
-      options: activeOptions,
-    });
-    showContext('sync_reports:active');
-  }
+  });
+
+  registerContext({
+    id: 'sync_reports:active',
+    title: 'Active Reports',
+    menu: 'sync_reports:main',
+    options: activeOptions,
+  });
+  showContext('sync_reports:active');
 };
 
 const fetchHistory = async () => {
   const historyOptions: ContextOption[] = [];
   const response: ReportData[] = await triggerServerCallback('sync_reports:fetchHistory', 0) as ReportData[];
   if (!response) {
-    historyOptions[1] = {
+    historyOptions.push({
       title: 'No Past Reports To Display',
       icon: 'clock-rotate-left',
       disabled: true,
-    };
+    });
     return;
   }
-  for (const report of response) {
+  response.map((report: ReportData) => {
     historyOptions.push({
       title: `[${report.reportId}] ${report.playerName}`,
       description: `${report.report}`,
       icon: 'hammer',
       disabled: true,
     });
-    registerContext({
-      id: 'sync_reports:history',
-      title: 'Report History',
-      menu: 'sync_reports:main',
-      options: historyOptions,
-    });
-    showContext('sync_reports:history');
-  }
+  })
+  registerContext({
+    id: 'sync_reports:history',
+    title: 'Report History',
+    menu: 'sync_reports:main',
+    options: historyOptions,
+  });
+  showContext('sync_reports:history');
 };
 
 registerContext({
