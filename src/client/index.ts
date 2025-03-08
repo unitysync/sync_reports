@@ -6,6 +6,17 @@ interface ReportData {
   reportId: number;
   player: number;
   target: number;
+  playerName: string;
+  report: string;
+}
+
+interface ContextOption {
+  title: string;
+  description?: string;
+  icon?: string;
+  onSelect?: (data: ReportData) => void;
+  args?: ReportData;
+  disabled?: boolean;
 }
 
 const reportOptions = (data: ReportData) => {
@@ -48,8 +59,8 @@ const reportOptions = (data: ReportData) => {
 };
 
 const fetchActive = async () => {
-  const activeOptions: object[] = [];
-  const response = await triggerServerCallback('sync_reports:fetchActive', 0);
+  const activeOptions: ContextOption[] = [];
+  const response: ReportData[] = await triggerServerCallback('sync_reports:fetchActive', 0) as ReportData[];
   if (!response) {
     activeOptions[1] = {
       title: 'No Active Reports',
@@ -59,7 +70,7 @@ const fetchActive = async () => {
     };
     return;
   }
-  for (const report of response as any[]) {
+  for (const report of response) {
     activeOptions.push({
       title: `[${report.reportId}] ${report.playerName}`,
       description: `${report.report}`,
@@ -71,15 +82,15 @@ const fetchActive = async () => {
       id: 'sync_reports:active',
       title: 'Active Reports',
       menu: 'sync_reports:main',
-      options: activeOptions as any[],
+      options: activeOptions,
     });
     showContext('sync_reports:active');
   }
 };
 
 const fetchHistory = async () => {
-  const historyOptions: object[] = [];
-  const response = await triggerServerCallback('sync_reports:fetchHistory', 0);
+  const historyOptions: ContextOption[] = [];
+  const response: ReportData[] = await triggerServerCallback('sync_reports:fetchHistory', 0) as ReportData[];
   if (!response) {
     historyOptions[1] = {
       title: 'No Past Reports To Display',
@@ -88,7 +99,7 @@ const fetchHistory = async () => {
     };
     return;
   }
-  for (const report of response as any[]) {
+  for (const report of response) {
     historyOptions.push({
       title: `[${report.reportId}] ${report.playerName}`,
       description: `${report.report}`,
@@ -99,7 +110,7 @@ const fetchHistory = async () => {
       id: 'sync_reports:history',
       title: 'Report History',
       menu: 'sync_reports:main',
-      options: historyOptions as any[],
+      options: historyOptions,
     });
     showContext('sync_reports:history');
   }
@@ -128,30 +139,25 @@ const openMenu = () => {
 
 onNet('sync_reports:openMenu', openMenu);
 
-RegisterCommand(
-  'report',
-  async () => {
-    const reportData: Array<any> = await inputDialog(
-      'Report Issue',
-      [
-        // TS Language Server doesn't like the type for some reason idk
-        // @ts-expect-error
-        {
-          type: 'textarea',
-          label: 'Report',
-          description: 'Please provide a detailed description of what you want to report.',
-          required: true,
-        },
-        {
-          type: 'number',
-          label: 'Target Player ID',
-          description: 'If you are reporting another player, please provide their ID.',
-          required: false,
-        },
-      ],
-      { allowCancel: true }
-    );
-    emitNet('sync_reports:addReport', reportData[0], reportData[1]);
-  },
-  false
-);
+RegisterCommand('report', async () => {
+  const reportData: [string, number] = await inputDialog(
+    'Report Issue',
+    [
+      {
+        // @ts-expect-error ! Waiting for ox_lib update (fix has been pushed)
+        type: 'textarea',
+        label: 'Report',
+        description: 'Please provide a detailed description of what you want to report.',
+        required: true,
+      },
+      {
+        type: 'number',
+        label: 'Target Player ID',
+        description: 'If you are reporting another player, please provide their ID.',
+        required: false,
+      },
+    ],
+    { allowCancel: true }
+  ) as [string, number];
+  emitNet('sync_reports:addReport', reportData[0], reportData[1]);
+}, false);
