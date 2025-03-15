@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "module": "es2020",
-    "target": "es2021",
-    "lib": ["es2021"],
+    "module": "es2022",
+    "target": "es2023",
+    "lib": ["es2023"],
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "allowUnreachableCode": false,
@@ -13,5 +13,5 @@
     "noUnusedLocals": true,
     "skipLibCheck": true
   },
-  "include": ["./src"]
+  "include": ["./"]
 }

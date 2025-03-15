@@ -16,7 +16,7 @@ createBuilder(
       name: 'server',
       options: {
         platform: 'node',
-        target: ['node16'],
+        target: ['node22'],
         format: 'cjs',
       },
     },
@@ -24,7 +24,7 @@ createBuilder(
       name: 'client',
       options: {
         platform: 'browser',
-        target: ['es2021'],
+        target: ['es2023'],
         format: 'iife',
       },
     },
@@ -33,7 +33,7 @@ createBuilder(
     await createFxmanifest({
       client_scripts: [outfiles.client],
       server_scripts: [outfiles.server],
-      dependencies: ['/server:7290', '/onesync'],
+      dependencies: ['/server:7290', '/onesync', '/server:12913'],
     });
   }
 );

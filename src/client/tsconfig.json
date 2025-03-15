@@ -1,12 +1,10 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "types": [
       "@citizenfx/client",
       "@nativewrappers/fivem"
     ],
-    "lib": ["ES2022"],
-    "moduleResolution": "bundler",
-    "module": "es2022"
   },
   "include": [
     "./"
