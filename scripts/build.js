@@ -1,10 +1,7 @@
 //@ts-check
-
-import { exists, exec, getFiles } from './utils.js';
 import { createBuilder, createFxmanifest } from '@overextended/fx-utils';
 
 const watch = process.argv.includes('--watch');
-const web = await exists('./web');
 
 createBuilder(
   watch,
@@ -37,5 +34,3 @@ createBuilder(
     });
   }
 );
-
-if (web) await exec(`cd ./web && vite build ${watch ? '--watch' : ''}`);

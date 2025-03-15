@@ -6,7 +6,6 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "web:dev": "cd web && vite dev",
     "build": "node scripts/build.js",
     "watch": "node scripts/build.js --watch",
     "prettier": "prettier ./src/**/*.ts --write",
@@ -26,26 +25,18 @@
     "@overextended/fx-utils": "^0.0.4",
     "@types/eslint__js": "^8.42.3",
     "@types/node": "^20.17.5",
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
     "@typescript-eslint/eslint-plugin": "^8.12.2",
     "@typescript-eslint/parser": "^8.12.2",
-    "@vitejs/plugin-react": "^4.3.3",
     "esbuild": "^0.23.1",
     "eslint": "^9.22.0",
-    "eslint-plugin-react-hooks": "^4.6.2",
-    "eslint-plugin-react-refresh": "^0.4.14",
     "prettier": "^3.3.3",
     "typescript": "^5.6.3",
-    "typescript-eslint": "^8.12.2",
-    "vite": "^5.4.10"
+    "typescript-eslint": "^8.12.2"
   },
   "dependencies": {
     "@jgoz/esbuild-plugin-typecheck": "^4.0.2",
     "@nativewrappers/fivem": "latest",
     "@overextended/ox_lib": "^3.30.0",
-    "@overextended/oxmysql": "^1.4.2",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "@overextended/oxmysql": "^1.4.2"
   }
 }
