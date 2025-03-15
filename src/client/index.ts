@@ -135,7 +135,6 @@ RegisterCommand('report', async () => {
     'Report Issue',
     [
       {
-        // @ts-expect-error ! Waiting for ox_lib update (fix has been pushed)
         type: 'textarea',
         label: 'Report',
         description: 'Please provide a detailed description of what you want to report.',
