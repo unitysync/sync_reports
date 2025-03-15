@@ -32,7 +32,7 @@
     "@typescript-eslint/parser": "^8.12.2",
     "@vitejs/plugin-react": "^4.3.3",
     "esbuild": "^0.23.1",
-    "eslint": "^9.13.0",
+    "eslint": "^9.22.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.14",
     "prettier": "^3.3.3",
@@ -43,8 +43,8 @@
   "dependencies": {
     "@jgoz/esbuild-plugin-typecheck": "^4.0.2",
     "@nativewrappers/fivem": "latest",
-    "@overextended/ox_lib": "latest",
-    "@overextended/oxmysql": "^1.3.0",
+    "@overextended/ox_lib": "^3.30.0",
+    "@overextended/oxmysql": "^1.4.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   }
