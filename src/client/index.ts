@@ -21,6 +21,7 @@ const reportOptions = (data: ReportData) => {
   registerContext({
     id: `sync_reports:options_${data.reportId}`,
     title: `Report: ${data.reportId}`,
+    menu: 'sync_reports:main',
     options: [
       {
         title: 'Resolve Report',
