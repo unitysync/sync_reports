@@ -52,7 +52,7 @@ const reportOptions = (data: ReportData) => {
 const fetchActive = async () => {
   const activeOptions: ContextOption[] = [];
   const response: ReportData[] = (await triggerServerCallback('sync_reports:fetchActive', 0)) as ReportData[];
-  if (response.length === 0) {
+  if (response[0] === null) {
     activeOptions.push({
       title: 'No Active Reports',
       description: 'Any active reports have been actioned or resolved. Keep doing a good job.',
@@ -83,7 +83,7 @@ const fetchActive = async () => {
 const fetchHistory = async () => {
   const historyOptions: ContextOption[] = [];
   const response: ReportData[] = (await triggerServerCallback('sync_reports:fetchHistory', 0)) as ReportData[];
-  if (response.length === 0) {
+  if (response[0] === null) {
     historyOptions.push({
       title: 'No Past Reports To Display',
       icon: 'clock-rotate-left',
