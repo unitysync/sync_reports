@@ -1,7 +1,7 @@
 import { onClientCallback, addCommand } from '@overextended/ox_lib/server';
 import { oxmysql as MySQL } from '@overextended/oxmysql';
 
-const playerCooldowns: boolean[] = []
+const playerCooldowns: boolean[] = [];
 
 const isAdmin = (src: number | string): boolean => {
   return IsPlayerAceAllowed(src.toString(), 'command.reports');
@@ -35,7 +35,7 @@ onNet('sync_reports:addReport', async (report: string, target?: number) => {
     });
     return;
   }
-  
+
   playerCooldowns[source] = true;
 
   await MySQL.insert('INSERT INTO reports (target, playerName, player, report, active) VALUES (?, ?, ?, ?, 1)', [
@@ -45,9 +45,12 @@ onNet('sync_reports:addReport', async (report: string, target?: number) => {
     report,
   ]);
 
-  setTimeout(() => {
-    playerCooldowns[source] = null;
-  }, GetConvarInt('reports:cooldown', 30000));
+  setTimeout(
+    () => {
+      playerCooldowns[source] = null;
+    },
+    GetConvarInt('reports:cooldown', 30000)
+  );
 
   const players = getPlayers().filter((p) => isAdmin(p));
   for (const player of players) {
@@ -61,9 +64,14 @@ onNet('sync_reports:addReport', async (report: string, target?: number) => {
   }
 });
 
-addCommand('reports', async (source) => {
-  emitNet('sync_reports:openMenu', source);
-}, {
-  help: 'View active reports',
-  restricted: true,
-});
+addCommand(
+  'reports',
+  // biome-ignore lint: ox_lib needs an async function to be passed but we don't need to await anything here
+  async (source) => {
+    emitNet('sync_reports:openMenu', source);
+  },
+  {
+    help: 'View active reports',
+    restricted: true,
+  }
+);

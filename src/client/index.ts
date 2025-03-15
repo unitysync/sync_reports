@@ -50,7 +50,7 @@ const reportOptions = (data: ReportData) => {
 
 const fetchActive = async () => {
   const activeOptions: ContextOption[] = [];
-  const response: ReportData[] = await triggerServerCallback('sync_reports:fetchActive', 0) as ReportData[];
+  const response: ReportData[] = (await triggerServerCallback('sync_reports:fetchActive', 0)) as ReportData[];
   if (response.length === 0) {
     activeOptions.push({
       title: 'No Active Reports',
@@ -81,7 +81,7 @@ const fetchActive = async () => {
 
 const fetchHistory = async () => {
   const historyOptions: ContextOption[] = [];
-  const response: ReportData[] = await triggerServerCallback('sync_reports:fetchHistory', 0) as ReportData[];
+  const response: ReportData[] = (await triggerServerCallback('sync_reports:fetchHistory', 0)) as ReportData[];
   if (response.length === 0) {
     historyOptions.push({
       title: 'No Past Reports To Display',
@@ -96,7 +96,7 @@ const fetchHistory = async () => {
         icon: 'hammer',
         disabled: true,
       });
-    })
+    });
   }
   registerContext({
     id: 'sync_reports:history',
@@ -130,24 +130,28 @@ const openMenu = () => {
 
 onNet('sync_reports:openMenu', openMenu);
 
-RegisterCommand('report', async () => {
-  const reportData: [string, number] = await inputDialog(
-    'Report Issue',
-    [
-      {
-        type: 'textarea',
-        label: 'Report',
-        description: 'Please provide a detailed description of what you want to report.',
-        required: true,
-      },
-      {
-        type: 'number',
-        label: 'Target Player ID',
-        description: 'If you are reporting another player, please provide their ID.',
-        required: false,
-      },
-    ],
-    { allowCancel: true }
-  ) as [string, number];
-  emitNet('sync_reports:addReport', reportData[0], reportData[1]);
-}, false);
+RegisterCommand(
+  'report',
+  async () => {
+    const reportData: [string, number] = (await inputDialog(
+      'Report Issue',
+      [
+        {
+          type: 'textarea',
+          label: 'Report',
+          description: 'Please provide a detailed description of what you want to report.',
+          required: true,
+        },
+        {
+          type: 'number',
+          label: 'Target Player ID',
+          description: 'If you are reporting another player, please provide their ID.',
+          required: false,
+        },
+      ],
+      { allowCancel: true }
+    )) as [string, number];
+    emitNet('sync_reports:addReport', reportData[0], reportData[1]);
+  },
+  false
+);
