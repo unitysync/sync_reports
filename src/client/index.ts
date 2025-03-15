@@ -152,6 +152,7 @@ RegisterCommand(
       ],
       { allowCancel: true }
     )) as [string, number];
+    if (!reportData) return;
     emitNet('sync_reports:addReport', reportData[0], reportData[1]);
   },
   false
