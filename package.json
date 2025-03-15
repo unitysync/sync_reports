@@ -8,30 +8,22 @@
   "scripts": {
     "build": "node scripts/build.js",
     "watch": "node scripts/build.js --watch",
-    "prettier": "prettier ./src/**/*.ts --write",
-    "eslint": "eslint ./src/**/*.ts"
+    "format": "biome format --write",
+    "lint": "biome lint --write"
   },
-  "keywords": [
-    "fivem"
-  ],
+  "keywords": ["fivem"],
   "repository": {
     "type": "git",
     "url": "https://github.com/unitysync/sync_reports.git"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@citizenfx/client": "latest",
     "@citizenfx/server": "latest",
-    "@eslint/js": "^9.13.0",
     "@overextended/fx-utils": "^0.0.4",
-    "@types/eslint__js": "^8.42.3",
     "@types/node": "^20.17.5",
-    "@typescript-eslint/eslint-plugin": "^8.12.2",
-    "@typescript-eslint/parser": "^8.12.2",
     "esbuild": "^0.23.1",
-    "eslint": "^9.22.0",
-    "prettier": "^3.3.3",
-    "typescript": "^5.6.3",
-    "typescript-eslint": "^8.12.2"
+    "typescript": "^5.6.3"
   },
   "dependencies": {
     "@jgoz/esbuild-plugin-typecheck": "^4.0.2",
