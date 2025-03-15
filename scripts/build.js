@@ -30,7 +30,7 @@ createBuilder(
     await createFxmanifest({
       client_scripts: [outfiles.client],
       server_scripts: [outfiles.server],
-      dependencies: ['/server:7290', '/onesync', '/server:12913'],
+      dependencies: ['/server:7290', '/onesync', '/server:12913', 'ox_lib', 'oxmysql'],
     });
   }
 );

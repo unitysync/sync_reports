@@ -1,5 +1,9 @@
+import { checkDependency } from '@overextended/ox_lib/shared';
 import { onClientCallback, addCommand } from '@overextended/ox_lib/server';
 import { oxmysql as MySQL } from '@overextended/oxmysql';
+
+if (!checkDependency('ox_lib', '3.30.0', true)) throw new Error('Failed dependency check.');
+if (!checkDependency('oxmysql', '2.13.0', true)) throw new Error('Failed dependency check.');
 
 const playerCooldowns: boolean[] = [];
 
