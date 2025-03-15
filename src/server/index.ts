@@ -14,13 +14,13 @@ const isAdmin = (src: number | string): boolean => {
 onClientCallback('sync_reports:fetchActive', async (src: number) => {
   if (!isAdmin(src)) return false;
   const reports = await MySQL.query('SELECT * FROM reports WHERE active = 1');
-  return reports;
+  return reports[0];
 });
 
 onClientCallback('sync_reports:fetchHistory', async (src: number) => {
   if (!isAdmin(src)) return false;
   const reports = await MySQL.query('SELECT * FROM reports WHERE active = 0');
-  return reports;
+  return reports[0];
 });
 
 onNet('sync_reports:resolveReport', async (reportId: number) => {
